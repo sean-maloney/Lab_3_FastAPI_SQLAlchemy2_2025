@@ -37,11 +37,12 @@ def update_user(user_id: int, updated_user: User):
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user_id doesn't exist")
 
 
-
-#Delete user
-#@app.del("/api/users", status_code=status.HTTP_201_CREATED)
-#def del_user(user: User):
-#    if any(u.user_id == user.user_id for u in users):
-#        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user_id doesn't exist")
- #   users.append(user)
- #   return user
+#delete user
+@app.delete("/api/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id: int):
+    for user in users:
+        if user.user_id == user_id:
+            users.remove(user)
+            return users
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+ 
