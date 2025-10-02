@@ -27,7 +27,7 @@ def add_user(user: User):
     users.append(user)
     return user
 #Update User
-@app.put("/api/users/{user_id}", status_code=status.HTTP_201_CREATED)
+@app.put("/api/users/{user_id}")
 def update_user(user_id: int, updated_user: User):
     for i, u in enumerate(users):
         if u.user_id == user_id:
@@ -40,11 +40,14 @@ def update_user(user_id: int, updated_user: User):
 #delete user
 @app.delete("/api/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id: int):
-    for user in users:
-        if user.user_id == user_id:
-            users.remove(user)
-            return users
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+    for i, u in enumerate(users):
+        if u.user_id == user_id:
+            users.pop(i)
+            return
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="User not found"
+    )
  
  #health 
 @app.get("/health")
