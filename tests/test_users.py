@@ -30,3 +30,10 @@ def test_bad_student_id_422(client, bad_name):
  r = client.post("/api/users", json=user_payload(uid=3, sid=bad_name))
  assert r.status_code == 422 # pydantic validation e
 
+#testing to see if delete user functions properly
+def test_delete_then_404(client):
+ client.post("/api/users", json=user_payload(uid=10))
+ r1 = client.delete("/api/users/10")
+ assert r1.status_code == 204
+ r2 = client.delete("/api/users/10")
+ assert r2.status_code == 404
