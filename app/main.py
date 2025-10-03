@@ -33,8 +33,10 @@ def update_user(user_id: int, updated_user: User):
         if u.user_id == user_id:
             users[i] = updated_user
             return updated_user
-    if any(u.user_id == update_user.user_id for u in users):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="user_id doesn't exist")
+        raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="User not found"
+    )
 
 
 #delete user

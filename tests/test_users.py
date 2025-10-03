@@ -26,9 +26,17 @@ def test_bad_student_id_422(client, bad_sid):
 
 # Testing for bad names
 @pytest.mark.parametrize("bad_name", ["123", "A", "A123", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"])
-def test_bad_student_id_422(client, bad_name):
+def test_bad_student_name_422(client, bad_name):
  r = client.post("/api/users", json=user_payload(uid=3, sid=bad_name))
  assert r.status_code == 422 # pydantic validation e
+
+# testing to see if update user functions properly
+def test_update_then_404(client):
+ client.post("/api/users", json=user_payload(uid=1, name="Sean", email="sm@atu.ie", age=22, sid="S1234567"))
+ r1 = client.put("/api/users/1", json=user_payload())
+ assert r1.status_code == 200
+ r2 = client.put("/api/users/2", json=user_payload())
+ assert r2.status_code == 404
 
 #testing to see if delete user functions properly
 def test_delete_then_404(client):
@@ -37,3 +45,4 @@ def test_delete_then_404(client):
  assert r1.status_code == 204
  r2 = client.delete("/api/users/10")
  assert r2.status_code == 404
+
